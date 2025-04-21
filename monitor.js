@@ -39,7 +39,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // interval is in ms
-const interval = 5 * 1000;
+const interval = 60 * 1000;
 
 const emptyLog = {
     "RICHMOND": [],
