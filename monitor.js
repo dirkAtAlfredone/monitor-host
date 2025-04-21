@@ -56,11 +56,6 @@ const emptyLog = {
 
 fs.writeFileSync("./log.json", JSON.stringify(emptyLog));
 
-(async () => {
-    const res = await ping.promise.probe(hosts[hosts.length - 1].host);
-    console.log(res.alive);
-})();
-
 const checkHost = () => {
 
     hosts.forEach(async (server) => {
@@ -80,7 +75,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "dbsl.vices@gmail.com",
+                            to: "support@alfredone.ca",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
@@ -102,7 +97,7 @@ const checkHost = () => {
                     });
                     const mailOptions = {
                         from: "dirk@alfredone.ca",
-                        to: "dbsl.vices@gmail.com",
+                        to: "support@alfredone.ca",
                         subject: `Server Status`,
                         text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                     }
@@ -127,7 +122,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "dbsl.vices@gmail.com",
+                            to: "support@alfredone.ca",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
