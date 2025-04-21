@@ -8,25 +8,28 @@ const GOOGLE_PASS = process.env.GOOGLE_PASS;
 
 const hosts = [{
     name: "RICHMOND",
-    host: '10.0.15.9'
+    host: '192.168.1.9'
 }, {
     name: "BURNABY",
-    host: '10.0.15.10'
+    host: '192.168.1.10'
 }, {
     name: "LANGLEY",
-    host: '10.0.15.11'
+    host: '192.168.1.11'
 }, {
     name: "DAWSON",
-    host: '10.0.15.12'
+    host: '192.168.1.12'
 }, {
     name: "VICTORIA",
-    host: '10.0.15.13'
+    host: '192.168.1.13'
 },/*{
     name: "DIRKELSON",
-    host: '10.0.15.14'
+    host: '192.168.1.14'
 }*/, {
     name: "VANCOUVER",
-    host: '10.0.15.15'
+    host: '192.168.1.15'
+}, {
+    name: "GATEWAY",
+    host: "192.168.1.1"
 }
 ];
 
@@ -47,10 +50,16 @@ const emptyLog = {
     "LANGLEY": [],
     "DAWSON": [],
     "VICTORIA": [],
-    "VANCOUVER": []
+    "VANCOUVER": [],
+    "GATEWAY": []
 }
 
 fs.writeFileSync("./log.json", JSON.stringify(emptyLog));
+
+(async () => {
+    const res = await ping.promise.probe(hosts[hosts.length - 1].host);
+    console.log(res.alive);
+})();
 
 const checkHost = () => {
 
@@ -71,7 +80,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "dbslapitan@gmail.com",
+                            to: "dbsl.vices@gmail.com",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
@@ -93,7 +102,7 @@ const checkHost = () => {
                     });
                     const mailOptions = {
                         from: "dirk@alfredone.ca",
-                        to: "support@alfredone.ca",
+                        to: "dbsl.vices@gmail.com",
                         subject: `Server Status`,
                         text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                     }
@@ -118,7 +127,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "dbslapitan@gmail.com",
+                            to: "dbsl.vices@gmail.com",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
@@ -140,5 +149,7 @@ const checkHost = () => {
         }
     });
 };
+
+checkHost();
 
 setInterval(checkHost, interval);
