@@ -75,7 +75,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "support@alfredone.ca",
+                            to: "support@alfredone.ca, dirk@alfredone.ca",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
@@ -97,7 +97,7 @@ const checkHost = () => {
                     });
                     const mailOptions = {
                         from: "dirk@alfredone.ca",
-                        to: "support@alfredone.ca",
+                        to: "support@alfredone.ca, dirk@alfredone.ca",
                         subject: `Server Status`,
                         text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                     }
@@ -122,7 +122,7 @@ const checkHost = () => {
                         });
                         const mailOptions = {
                             from: "dirk@alfredone.ca",
-                            to: "support@alfredone.ca",
+                            to: "support@alfredone.ca, dirk@alfredone.ca",
                             subject: `Server Status`,
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
