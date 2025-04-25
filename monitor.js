@@ -12,15 +12,9 @@ const hosts = [{
 }, {
     name: "BURNABY",
     host: '192.168.1.10'
-}, {
-    name: "LANGLEY",
-    host: '192.168.1.11'
-}, {
+},{
     name: "DAWSON",
     host: '192.168.1.12'
-}, {
-    name: "VICTORIA",
-    host: '192.168.1.13'
 },/*{
     name: "DIRKELSON",
     host: '192.168.1.14'
@@ -47,9 +41,7 @@ const interval = 60 * 1000;
 const emptyLog = {
     "RICHMOND": [],
     "BURNABY": [],
-    "LANGLEY": [],
     "DAWSON": [],
-    "VICTORIA": [],
     "VANCOUVER": [],
     "GATEWAY": []
 }
