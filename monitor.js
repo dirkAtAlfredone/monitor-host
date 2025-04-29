@@ -24,6 +24,21 @@ const hosts = [{
 }, {
     name: "GATEWAY",
     host: "192.168.1.1"
+}, {
+    name: "NAS-1",
+    host: "192.168.1.6"
+}, {
+    name: "NAS-2",
+    host: "192.168.1.7"
+}, {
+    name: "RACK-1-Switch",
+    host: "192.168.1.3"
+}, {
+    name: "RACK-2-Switch",
+    host: "192.168.1.2"
+}, {
+    name: "RACK-3-Switch",
+    host: "192.168.1.5"
 }
 ];
 
@@ -38,13 +53,15 @@ const transporter = nodemailer.createTransport({
 // interval is in ms
 const interval = 60 * 1000;
 
-const emptyLog = {
-    "RICHMOND": [],
-    "BURNABY": [],
-    "DAWSON": [],
-    "VANCOUVER": [],
-    "GATEWAY": []
-}
+const emptyLog = (() => {
+    const serverLogs = {};
+
+    hosts.forEach(host => {
+        serverLogs[host.name] = [];
+    });
+
+    return serverLogs;
+})();
 
 fs.writeFileSync("./log.json", JSON.stringify(emptyLog));
 
@@ -72,7 +89,7 @@ const checkHost = () => {
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
 
-                        transporter.sendMail(mailOptions, (error, info) => {
+                        /transporter.sendMail(mailOptions, (error, info) => {
                             if (error) {
                                 return console.log('Error sending email...', error);
                             }
@@ -100,6 +117,7 @@ const checkHost = () => {
                         }
                         console.log(`Email sent to ${info.response}`);
                     });
+
                     fs.writeFileSync("./log.json", JSON.stringify(log));
                 }
             }
