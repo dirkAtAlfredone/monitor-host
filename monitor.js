@@ -89,12 +89,12 @@ const checkHost = () => {
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
 
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {
-                                return console.log('Error sending email...', error);
-                            }
-                            console.log(`Email sent to ${info.response}`);
-                        });
+                        // transporter.sendMail(mailOptions, (error, info) => {
+                        //     if (error) {
+                        //         return console.log('Error sending email...', error);
+                        //     }
+                        //     console.log(`Email sent to ${info.response}`);
+                        // });
 
                         fs.writeFileSync("./log.json", JSON.stringify(log));
                     }
@@ -111,12 +111,12 @@ const checkHost = () => {
                         text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                     }
 
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log('Error sending email...', error);
-                        }
-                        console.log(`Email sent to ${info.response}`);
-                    });
+                    // transporter.sendMail(mailOptions, (error, info) => {
+                    //     if (error) {
+                    //         return console.log('Error sending email...', error);
+                    //     }
+                    //     console.log(`Email sent to ${info.response}`);
+                    // });
 
                     fs.writeFileSync("./log.json", JSON.stringify(log));
                 }
@@ -137,12 +137,12 @@ const checkHost = () => {
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
 
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {
-                                return console.log('Error sending email...', error);
-                            }
-                            console.log(`Email sent to ${info.response}`);
-                        });
+                        // transporter.sendMail(mailOptions, (error, info) => {
+                        //     if (error) {
+                        //         return console.log('Error sending email...', error);
+                        //     }
+                        //     console.log(`Email sent to ${info.response}`);
+                        // });
                         
                         fs.writeFileSync("./log.json", JSON.stringify(log));
                     }
