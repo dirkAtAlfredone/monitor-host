@@ -25,11 +25,8 @@ const hosts = [{
     name: "GATEWAY",
     host: "192.168.1.1"
 }, {
-    name: "NAS-1",
+    name: "AOSERVER-NAS",
     host: "192.168.1.6"
-}, {
-    name: "NAS-2",
-    host: "192.168.1.7"
 }, {
     name: "RACK-1-Switch",
     host: "192.168.1.3"
@@ -39,6 +36,9 @@ const hosts = [{
 }, {
     name: "RACK-3-Switch",
     host: "192.168.1.5"
+}, {
+    name: "DUNCAN-CAD",
+    host: "192.168.1.13"
 }
 ];
 
@@ -89,7 +89,7 @@ const checkHost = () => {
                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
                         }
 
-                        /transporter.sendMail(mailOptions, (error, info) => {
+                        transporter.sendMail(mailOptions, (error, info) => {
                             if (error) {
                                 return console.log('Error sending email...', error);
                             }
