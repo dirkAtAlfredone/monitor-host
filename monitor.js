@@ -27,18 +27,32 @@ const hosts = [{
 }, {
     name: "AOSERVER-NAS",
     host: "192.168.1.6"
-}, {
-    name: "RACK-1-Switch",
-    host: "192.168.1.3"
-}, {
-    name: "RACK-2-Switch",
-    host: "192.168.1.2"
-}, {
-    name: "RACK-3-Switch",
-    host: "192.168.1.5"
-}, {
+}, 
+// {
+//     name: "RACK-1-Switch",
+//     host: "192.168.1.3"
+// }, {
+//     name: "RACK-2-Switch",
+//     host: "192.168.1.2"
+// }, {
+//     name: "RACK-3-Switch",
+//     host: "192.168.1.5"
+// }, 
+{
     name: "DUNCAN-CAD",
     host: "192.168.1.13"
+}, {
+    name: "STANLEY",
+    host: "192.168.1.247"
+}, {
+    name: "CACHE CREEK",
+    host: "192.168.1.248"
+}, {
+    name: "NANAIMO",
+    host: "192.168.1.249"
+}, {
+    name: "SURREY",
+    host: "192.168.1.250"
 }
 ];
 
