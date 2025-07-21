@@ -22,7 +22,7 @@ const hosts = [{
     name: "GATEWAY",
     host: "192.168.1.1"
 }, {
-    name: "DEV-SYSTEM1",
+    name: "NELSON",
     host: "192.168.1.13"
 }, {
     name: "STANLEY",
