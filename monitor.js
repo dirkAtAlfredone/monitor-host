@@ -15,30 +15,13 @@ const hosts = [{
 },{
     name: "DAWSON",
     host: '192.168.1.12'
-},/*{
-    name: "DIRKELSON",
-    host: '192.168.1.14'
-}*/, {
+}, {
     name: "VANCOUVER",
     host: '192.168.1.15'
 }, {
     name: "GATEWAY",
     host: "192.168.1.1"
 }, {
-    name: "AOSERVER-NAS",
-    host: "192.168.1.6"
-}, 
-// {
-//     name: "RACK-1-Switch",
-//     host: "192.168.1.3"
-// }, {
-//     name: "RACK-2-Switch",
-//     host: "192.168.1.2"
-// }, {
-//     name: "RACK-3-Switch",
-//     host: "192.168.1.5"
-// }, 
-{
     name: "DEV-SYSTEM1",
     host: "192.168.1.13"
 }, {
@@ -56,15 +39,26 @@ const hosts = [{
 }, {
     name: "UISP",
     host: "192.168.1.240"
-}, {
-    name: "UISP-R",
-    host: "192.168.1.241"
-}, {
+}, 
+// {
+//     name: "UISP-R",
+//     host: "192.168.1.241"
+// }, 
+{
     name: "COQUITLAM",
     host: "192.168.1.245"
 }, {
     name: "NEWWEST",
     host: "192.168.1.246"
+}, {
+    name: "AP01",
+    host: "192.168.1.231"
+}, {
+    name: "AP02",
+    host: "192.168.1.232"
+}, {
+    name: "AP03",
+    host: "192.168.1.233"
 }
 ];
 
@@ -176,7 +170,7 @@ const checkHost = () => {
             }
         }
         catch (e) {
-            
+            console.log(e);
         }
     });
 };
