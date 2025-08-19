@@ -40,10 +40,6 @@ const hosts = [{
     name: "UISP",
     host: "192.168.1.240"
 }, 
-// {
-//     name: "UISP-R",
-//     host: "192.168.1.241"
-// }, 
 {
     name: "COQUITLAM",
     host: "192.168.1.245"
@@ -59,6 +55,24 @@ const hosts = [{
 }, {
     name: "AP03",
     host: "192.168.1.233"
+}, {
+    name: "COMOX",
+    host: "192.168.1.3"
+}, {
+    name: "WHITEROCK",
+    host: "192.168.1.4"
+}, {
+    name: "KAMLOOPS",
+    host: "192.168.1.20"
+}, {
+    name: "KELOWNA",
+    host: "192.168.1.21"
+}, {
+    name: "GOLDEN",
+    host: "192.168.1.22"
+}, {
+    name: "REVELSTOKE",
+    host: "192.168.1.23"
 }
 ];
 
