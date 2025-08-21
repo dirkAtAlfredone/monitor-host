@@ -4,191 +4,195 @@ const ping = require('ping');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 
-const GOOGLE_PASS = process.env.GOOGLE_PASS;
-
-const hosts = [{
-    name: "RICHMOND",
-    host: '192.168.1.9'
-}, {
-    name: "BURNABY",
-    host: '192.168.1.10'
-},{
-    name: "DAWSON",
-    host: '192.168.1.12'
-}, {
-    name: "VANCOUVER",
-    host: '192.168.1.15'
-}, {
-    name: "GATEWAY",
-    host: "192.168.1.1"
-}, {
-    name: "NELSON",
-    host: "192.168.1.13"
-}, {
-    name: "STANLEY",
-    host: "192.168.1.247"
-}, {
-    name: "CACHE CREEK",
-    host: "192.168.1.248"
-}, {
-    name: "NANAIMO",
-    host: "192.168.1.249"
-}, {
-    name: "SURREY",
-    host: "192.168.1.250"
-}, {
-    name: "UISP",
-    host: "192.168.1.240"
-}, 
-{
-    name: "COQUITLAM",
-    host: "192.168.1.245"
-}, {
-    name: "NEWWEST",
-    host: "192.168.1.246"
-}, {
-    name: "AP01",
-    host: "192.168.1.231"
-}, {
-    name: "AP02",
-    host: "192.168.1.232"
-}, {
-    name: "AP03",
-    host: "192.168.1.233"
-}, {
-    name: "COMOX",
-    host: "192.168.1.3"
-}, {
-    name: "WHITEROCK",
-    host: "192.168.1.4"
-}, {
-    name: "KAMLOOPS",
-    host: "192.168.1.20"
-}, {
-    name: "KELOWNA",
-    host: "192.168.1.21"
-}, {
-    name: "GOLDEN",
-    host: "192.168.1.22"
-}, {
-    name: "REVELSTOKE",
-    host: "192.168.1.23"
-}
-];
-
 const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: "dirk@alfredone.ca",
-        pass: GOOGLE_PASS
-    }
+    host: "mail.alfredone.ca"
 });
 
-// interval is in ms
-const interval = 60 * 1000;
+// const GOOGLE_PASS = process.env.GOOGLE_PASS;
 
-const emptyLog = (() => {
-    const serverLogs = {};
+// const hosts = [{
+//     name: "RICHMOND",
+//     host: '192.168.1.9'
+// }, {
+//     name: "BURNABY",
+//     host: '192.168.1.10'
+// },{
+//     name: "DAWSON",
+//     host: '192.168.1.12'
+// }, {
+//     name: "VANCOUVER",
+//     host: '192.168.1.15'
+// }, {
+//     name: "GATEWAY",
+//     host: "192.168.1.1"
+// }, {
+//     name: "NELSON",
+//     host: "192.168.1.13"
+// }, {
+//     name: "STANLEY",
+//     host: "192.168.1.247"
+// }, {
+//     name: "CACHE CREEK",
+//     host: "192.168.1.248"
+// }, {
+//     name: "NANAIMO",
+//     host: "192.168.1.249"
+// }, {
+//     name: "SURREY",
+//     host: "192.168.1.250"
+// }, {
+//     name: "UISP",
+//     host: "192.168.1.240"
+// }, 
+// {
+//     name: "COQUITLAM",
+//     host: "192.168.1.245"
+// }, {
+//     name: "NEWWEST",
+//     host: "192.168.1.246"
+// }, {
+//     name: "AP01",
+//     host: "192.168.1.231"
+// }, {
+//     name: "AP02",
+//     host: "192.168.1.232"
+// }, {
+//     name: "AP03",
+//     host: "192.168.1.233"
+// }, {
+//     name: "COMOX",
+//     host: "192.168.1.3"
+// }, {
+//     name: "WHITEROCK",
+//     host: "192.168.1.4"
+// }, {
+//     name: "KAMLOOPS",
+//     host: "192.168.1.20"
+// }, {
+//     name: "KELOWNA",
+//     host: "192.168.1.21"
+// }, {
+//     name: "GOLDEN",
+//     host: "192.168.1.22"
+// }, {
+//     name: "REVELSTOKE",
+//     host: "192.168.1.23"
+// }
+// ];
 
-    hosts.forEach(host => {
-        serverLogs[host.name] = [];
-    });
+// const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         user: "dirk@alfredone.ca",
+//         pass: GOOGLE_PASS
+//     }
+// });
 
-    return serverLogs;
-})();
+// // interval is in ms
+// const interval = 60 * 1000;
 
-fs.writeFileSync("./log.json", JSON.stringify(emptyLog));
+// const emptyLog = (() => {
+//     const serverLogs = {};
 
-const checkHost = () => {
+//     hosts.forEach(host => {
+//         serverLogs[host.name] = [];
+//     });
 
-    hosts.forEach(async (server) => {
-        try {
-            const res = await ping.promise.probe(server.host);
-            console.log(`[${new Date().toISOString()}] ${server.name} is ${res.alive ? "UP" : "DOWN"}`);
-            const log = JSON.parse(fs.readFileSync("./log.json", "utf-8"));
-            if (!res.alive) {
-                const serverStatus = log[server.name];
+//     return serverLogs;
+// })();
 
-                if (serverStatus.length) {
-                    const lastStatus = serverStatus[serverStatus.length - 1];
-                    if (lastStatus.isAlive !== res.alive) {
-                        log[server.name].push({
-                            date: new Date().toISOString(),
-                            isAlive: res.alive
-                        });
-                        const mailOptions = {
-                            from: "dirk@alfredone.ca",
-                            to: "support@alfredone.ca, dirk@alfredone.ca",
-                            subject: `Server Status`,
-                            text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
-                        }
+// fs.writeFileSync("./log.json", JSON.stringify(emptyLog));
 
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {
-                                return console.log('Error sending email...', error);
-                            }
-                            console.log(`Email sent to ${info.response}`);
-                        });
+// const checkHost = () => {
 
-                        fs.writeFileSync("./log.json", JSON.stringify(log));
-                    }
-                }
-                else {
-                    log[server.name].push({
-                        date: new Date().toISOString(),
-                        isAlive: res.alive
-                    });
-                    const mailOptions = {
-                        from: "dirk@alfredone.ca",
-                        to: "support@alfredone.ca, dirk@alfredone.ca",
-                        subject: `Server Status`,
-                        text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
-                    }
+//     hosts.forEach(async (server) => {
+//         try {
+//             const res = await ping.promise.probe(server.host);
+//             console.log(`[${new Date().toISOString()}] ${server.name} is ${res.alive ? "UP" : "DOWN"}`);
+//             const log = JSON.parse(fs.readFileSync("./log.json", "utf-8"));
+//             if (!res.alive) {
+//                 const serverStatus = log[server.name];
 
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log('Error sending email...', error);
-                        }
-                        console.log(`Email sent to ${info.response}`);
-                    });
+//                 if (serverStatus.length) {
+//                     const lastStatus = serverStatus[serverStatus.length - 1];
+//                     if (lastStatus.isAlive !== res.alive) {
+//                         log[server.name].push({
+//                             date: new Date().toISOString(),
+//                             isAlive: res.alive
+//                         });
+//                         const mailOptions = {
+//                             from: "dirk@alfredone.ca",
+//                             to: "support@alfredone.ca, dirk@alfredone.ca",
+//                             subject: `Server Status`,
+//                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
+//                         }
 
-                    fs.writeFileSync("./log.json", JSON.stringify(log));
-                }
-            }
-            else {
-                const serverStatus = log[server.name];
-                if (serverStatus.length) {
-                    const lastStatus = serverStatus[serverStatus.length - 1];
-                    if (lastStatus.isAlive !== res.alive) {
-                        log[server.name].push({
-                            date: new Date().toISOString(),
-                            isAlive: res.alive
-                        });
-                        const mailOptions = {
-                            from: "dirk@alfredone.ca",
-                            to: "support@alfredone.ca, dirk@alfredone.ca",
-                            subject: `Server Status`,
-                            text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
-                        }
+//                         transporter.sendMail(mailOptions, (error, info) => {
+//                             if (error) {
+//                                 return console.log('Error sending email...', error);
+//                             }
+//                             console.log(`Email sent to ${info.response}`);
+//                         });
 
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {
-                                return console.log('Error sending email...', error);
-                            }
-                            console.log(`Email sent to ${info.response}`);
-                        });
+//                         fs.writeFileSync("./log.json", JSON.stringify(log));
+//                     }
+//                 }
+//                 else {
+//                     log[server.name].push({
+//                         date: new Date().toISOString(),
+//                         isAlive: res.alive
+//                     });
+//                     const mailOptions = {
+//                         from: "dirk@alfredone.ca",
+//                         to: "support@alfredone.ca, dirk@alfredone.ca",
+//                         subject: `Server Status`,
+//                         text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
+//                     }
+
+//                     transporter.sendMail(mailOptions, (error, info) => {
+//                         if (error) {
+//                             return console.log('Error sending email...', error);
+//                         }
+//                         console.log(`Email sent to ${info.response}`);
+//                     });
+
+//                     fs.writeFileSync("./log.json", JSON.stringify(log));
+//                 }
+//             }
+//             else {
+//                 const serverStatus = log[server.name];
+//                 if (serverStatus.length) {
+//                     const lastStatus = serverStatus[serverStatus.length - 1];
+//                     if (lastStatus.isAlive !== res.alive) {
+//                         log[server.name].push({
+//                             date: new Date().toISOString(),
+//                             isAlive: res.alive
+//                         });
+//                         const mailOptions = {
+//                             from: "dirk@alfredone.ca",
+//                             to: "support@alfredone.ca, dirk@alfredone.ca",
+//                             subject: `Server Status`,
+//                             text: `${server.name} is ${res.alive ? "back UP" : "DOWN"} at ${new Date().toISOString()}`
+//                         }
+
+//                         transporter.sendMail(mailOptions, (error, info) => {
+//                             if (error) {
+//                                 return console.log('Error sending email...', error);
+//                             }
+//                             console.log(`Email sent to ${info.response}`);
+//                         });
                         
-                        fs.writeFileSync("./log.json", JSON.stringify(log));
-                    }
-                }
-            }
-        }
-        catch (e) {
-            console.log(e);
-        }
-    });
-};
+//                         fs.writeFileSync("./log.json", JSON.stringify(log));
+//                     }
+//                 }
+//             }
+//         }
+//         catch (e) {
+//             console.log(e);
+//         }
+//     });
+// };
 
-checkHost();
+// checkHost();
 
-setInterval(checkHost, interval);
+// setInterval(checkHost, interval);
