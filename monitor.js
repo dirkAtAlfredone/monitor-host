@@ -95,9 +95,6 @@ const hosts = [{
 }, {
     name: "REVELSTOKE",
     host: "192.168.1.23"
-}, {
-    name: "TEST-SERVER",
-    host: "192.168.1.216"
 }
 ];
 
