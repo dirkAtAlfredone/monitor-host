@@ -17,8 +17,8 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
     from: "noreply@alfredone.ca",
-    to: "dirk@alfredone.ca, bruce@alfredone.ca, caroline@alfredone.ca, isabelle@alfredone.ca",
-    subject: `Server Status Changed (Testing if it works)`,
+    to: "dirk@alfredone.ca, bruce@alfredone.ca",
+    subject: `Server Status Changed`,
     html: ``
 }
 
@@ -95,6 +95,30 @@ const hosts = [{
 }, {
     name: "REVELSTOKE",
     host: "192.168.1.23"
+}, {
+    name: "YYJ",
+    host: "192.168.1.204"
+}, {
+    name: "YVR",
+    host: "192.168.1.213"
+}, {
+    name: "YYC",
+    host: "192.168.1.206"
+}, {
+    name: "YEG",
+    host: "192.168.1.214"
+}, {
+    name: "YWG",
+    host: "192.168.1.212"
+}, {
+    name: "YYZ",
+    host: "192.168.1.209"
+}, {
+    name: "YUL",
+    host: "192.168.1.210"
+}, {
+    name: "YHZ",
+    host: "192.168.1.211"
 }
 ];
 
