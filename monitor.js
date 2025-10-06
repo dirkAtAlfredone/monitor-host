@@ -119,6 +119,18 @@ const hosts = [{
 }, {
     name: "YHZ",
     host: "192.168.1.211"
+}, {
+  name: "LHR",
+  host: "192.168.1.220"
+}, {
+  name: "CDG",
+  host: "192.168.1.221"
+}, {
+  name: "ZUR",
+  host: "192.168.1.222"
+}, {
+  name: "NRT",
+  host: "192.168.1.223"
 }
 ];
 
@@ -141,7 +153,7 @@ const checkHost = async () => {
     console.log("Servers pinged...");
     const pings = hosts.map(async (server) => {
         // try{
-            return await ping.promise.probe(server.host);
+            return await ping.promise.probe(server.host, {min_reply: 10});
         // }
         // catch(e){
             // return await new Promise((resolve, reject) => {
