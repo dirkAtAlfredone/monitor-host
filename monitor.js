@@ -60,9 +60,6 @@ const hosts = [{
     name: "SURREY",
     host: "192.168.1.250"
 }, {
-    name: "UISP",
-    host: "192.168.1.240"
-}, {
     name: "COQUITLAM",
     host: "192.168.1.245"
 }, {
