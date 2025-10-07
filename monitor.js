@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: "noreply@alfredone.ca",
-  to: "dirk@alfredone.ca",
+  to: "dirk@alfredone.ca, bruce@alfredone.ca",
   subject: `Server Status Changed`,
   html: ``
 }
@@ -125,9 +125,6 @@ const hosts = [{
 }, {
   name: "NRT",
   host: "192.168.1.223"
-}, {
-  name: "TEST",
-  host: "192.168.1.216"
 }
 ];
 
@@ -147,7 +144,8 @@ const log = (() => {
 fs.writeFileSync("./log.json", JSON.stringify(log));
 
 const checkHost = async () => {
-  const pings = hosts.map(async (server) => {
+  console.log("Servers pinged...");
+    const pings = hosts.map(async (server) => {
     return await ping.promise.probe(server.host, { min_reply: 10 });
   });
 
@@ -214,7 +212,6 @@ const checkHost = async () => {
       changeList.push(ping.name);
     }
   }
-  console.log(log);
   // const reduced = settled.reduce((prev, current) => {
   //   const serverStat = log[current.name];
   //   const serverLog = serverStat.log || [];
