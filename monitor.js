@@ -6,6 +6,10 @@ const nodemailer = require('nodemailer');
 
 const PASS = process.env.PASS;
 
+const d = new Date();
+
+const dateString = d.getFullYear()+"-"+(d.getMonth()+1).toString().padStart(2,0)+"-"+d.getDate().toString().padStart(2,0)+"_"+d.getHours().toString().padStart(2,0)+":"+d.getMinutes().toString().padStart(2,0)+":"+d.getSeconds().toString().padStart(2,0);
+
 const transporter = nodemailer.createTransport({
   host: "mail.alfredone.ca",
   secure: true,
@@ -131,6 +135,12 @@ const hosts = [{
 // interval is in ms
 const interval = 60 * 1000;
 
+let FAIL_LOG = [];
+const FAIL_LOG_NAME = `fail_log_${dateString}`;
+const LOG_NAME = `log_${dateString}`;
+
+fs.writeFileSync(`${FAIL_LOG_NAME}`, "[]");
+
 const log = (() => {
   const serverLogs = {};
 
@@ -141,7 +151,7 @@ const log = (() => {
   return serverLogs;
 })();
 
-fs.writeFileSync("./log.json", JSON.stringify(log));
+fs.writeFileSync(`${LOG_NAME}`, JSON.stringify(log));
 
 const checkHost = async () => {
   console.log("Servers pinged...");
@@ -157,7 +167,8 @@ const checkHost = async () => {
         alive: response?.value?.alive,
         host: response?.value?.host,
         name: find.name,
-        ip: find.host
+        ip: find.host,
+        response: response.value
       }
     }
     else {
@@ -167,12 +178,25 @@ const checkHost = async () => {
         alive: response?.value?.alive,
         host: response?.value?.host,
         name: "",
-        ip: ""
+        ip: "",
+        response: response.value
       }
     }
   }));
 
+  let tempFail = [];
+
   for (const ping of settled) {
+
+    if(!ping.alive){
+      const newFailLog = {
+        name: ping.name,
+        date: new Date().toLocaleDateString(),
+        response: ping.response
+      }
+      tempFail.push(newFailLog);
+    }
+
     if (!log[ping.name]?.log?.length) {
       const newLog = {
         date: new Date().toISOString(),
@@ -197,8 +221,6 @@ const checkHost = async () => {
         log[ping.name].state = ping.alive ? "reachable" : "unreachable";
         log[ping.name].count = 1;
         log[ping.name].log.push(newLog);
-
-        fs.writeFileSync("./log.json", JSON.stringify(log));
       } else {
           log[ping.name].count++;
       }
@@ -212,58 +234,15 @@ const checkHost = async () => {
       changeList.push(ping.name);
     }
   }
-  // const reduced = settled.reduce((prev, current) => {
-  //   const serverStat = log[current.name];
-  //   const serverLog = serverStat.log || [];
-  //   const lastLog = serverLog[serverLog.length - 1] || { isAlive: true, date: new Date().toISOString() };
-  //   let isSend = false;
-  //   let tempHosts = [...prev.hosts];
 
-  //   if (!current.alive) {
-  //     log[current.name].lostCount = log[current.name].lostCount + 1;
-  //     console.log("got to not alive", log[current.name].lostCount)
-  //   } else {
-  //     log[current.name].lostCount = 0;
-  //   }
+  fs.writeFileSync(`${LOG_NAME}`, JSON.stringify(log));
 
-  //   if (lastLog.isAlive !== current.alive) {
-  //     console.log()
-  //     if (!current.alive) {
-  //       if (log[current.name].lostCount >= 5) {
-  //         isSend = true;
-  //       }
-  //     } else {
-  //       isSend = true;
-  //     }
-  //     tempHosts.push({
-  //       serverName: current.name,
-  //       isAlive: current.alive,
-  //       date: new Date().toISOString(),
-  //       hasChanged: true,
-  //       ip: current.ip
-  //     });
-  //     log[current.name].log.push({
-  //       isAlive: current.alive,
-  //       date: new Date().toISOString(),
-  //       host: current.ip
-  //     })
-  //     console.log(log);
-  //     fs.writeFileSync("./log.json", JSON.stringify(log));
-  //   } else {
-  //     tempHosts.push({
-  //       serverName: current.name,
-  //       isAlive: current.alive,
-  //       date: new Date().toISOString(),
-  //       hasChanged: false,
-  //       ip: current.ip
-  //     });
-  //   }
-
-  //   return {
-  //     isSend: prev.isSend || isSend,
-  //     hosts: tempHosts
-  //   }
-  // }, { isSend: false, hosts: [] });
+  if(tempFail.length){
+    const previousFailJSON = fs.readFileSync(FAIL_LOG_NAME);
+    const previousFail = JSON.parse(previousFailJSON);
+    const merged = previousFail.concat(tempFail);
+    fs.writeFileSync(FAIL_LOG_NAME, JSON.stringify(merged));
+  }
 
   if (sendFlag) {
     console.log("message sent...");
